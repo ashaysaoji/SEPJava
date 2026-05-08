@@ -4,6 +4,7 @@ package com.ashay.assignment2.service;
 import com.ashay.assignment2.entity.Student;
 import com.ashay.assignment2.entity.StudentTeacher;
 import com.ashay.assignment2.entity.Teacher;
+import com.ashay.assignment2.exception.ResourceNotFoundException;
 import com.ashay.assignment2.repository.StudentRepository;
 import com.ashay.assignment2.repository.StudentTeacherRepository;
 
@@ -29,7 +30,7 @@ public class StudentService {
 
     public Student getById(Long id) {
         return studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + id));
     }
 
     public Student create(Student student) {
