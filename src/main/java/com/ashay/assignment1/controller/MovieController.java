@@ -2,11 +2,11 @@ package com.ashay.assignment1.controller;
 
 
 import com.ashay.assignment1.service.MovieService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -20,11 +20,13 @@ public class MovieController {
     }
 
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
     public List<Object> getAllMovies() {
         return  movieService.getAllMovies();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(params = {"title"})
     public List<Object> getMoviesByParams(
         @RequestParam(required = false) String title,
