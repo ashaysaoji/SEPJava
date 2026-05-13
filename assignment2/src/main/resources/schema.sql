@@ -23,3 +23,4 @@ CREATE TABLE student_teacher (
      CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES student(id),
      CONSTRAINT fk_teacher FOREIGN KEY (teacher_id) REFERENCES teacher(id)
 );
+
