@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Alarm Verifier - False Alarm Detection API
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  AlarmVerifierFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Layers:
+        - arn:aws:lambda:us-east-1:484279833898:layer:alarm-verifier-deps:3
+      Environment:
+        Variables:
+          MODEL_BUCKET: alarm-verifier-model-ashay
+      Policies:
+        - S3ReadPolicy:
+            BucketName: alarm-verifier-model-ashay
+      Events:
+        VerifyAlarm:
+          Type: Api
+          Properties:
+            Path: /verify
+            Method: post
+
+Parameters:
+  ModelBucketName:
+    Type: String
+    Default: alarm-verifier-model-ashay
+    Description: S3 bucket name where the model is stored
+
+Outputs:
+  AlarmVerifierApi:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/verify/"
+  AlarmVerifierFunction:
+    Description: Lambda Function ARN
+    Value: !GetAtt AlarmVerifierFunction.Arn
